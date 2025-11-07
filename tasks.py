@@ -18,7 +18,17 @@ from sklearn import datasets
 # Copy and paste the code for that function here:
 # -----------------------------------------------
 def my_mlp(w, X, sigma=np.tanh):
+    W1 = np.array([w[0:(4*6)]])
+    W1 = W1.reshape((4, 6))
+    W2 = np.array([w[4*6:4*6 + 4*7]])
+    W2 = W2.reshape((7, 4))
+    W3 = np.array([w[4*6 + 4*7:]])
+    W3 = W3.reshape((1, 7))
 
+    a1 = sigma(W1 @ X)
+    a2 = sigma(W2 @ a1)
+    f = sigma(W3 @ a2)
+    
     return f
 # -----------------------------------------------
  
@@ -33,7 +43,8 @@ def my_mlp(w, X, sigma=np.tanh):
 # Copy and paste the code for that function here:
 # -----------------------------------------------
 def MSE_func(w, X, y): # give the appropriate name and arguments
-
+    f = my_mlp(w, X)
+    MSE = np.sum((f - y) ** 2)
     return MSE
 # -----------------------------------------------
  
@@ -50,8 +61,8 @@ def MSE_func(w, X, y): # give the appropriate name and arguments
 # Copy and paste the code for that function here:
 # -----------------------------------------------
 def dR(beta, x, y):
-    # implement the above formula for dR/dβ₀
-    # implement the above formula for dR/dβ₁
+    dbeta_0 = 2*np.mean(beta[0]+beta[1]*x - y) # implement the above formula for dR/dβ₀
+    dbeta_1 = 2*np.mean((beta[0]+beta[1]*x - y)*x) # implement the above formula for dR/dβ₁
     return np.array([dbeta_0, dbeta_1])
  
 # -----------------------------------------------
